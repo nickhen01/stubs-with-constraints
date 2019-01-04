@@ -4,23 +4,15 @@ require "dashboard"
 describe Dashboard do
   describe "#posts" do
     it "returns posts visible to the current user" do
-      user = create(:user)
-      other_user = create(:user)
-      create :post, user: other_user, published: true, title: "published_one"
-      create :post, user: other_user, published: true, title: "published_two"
-      create :post, user: other_user, published: false, title: "unpublished"
-      create :post, user: user, published: false, title: "visible_one"
-      create :post, user: user, published: false, title: "visible_two"
+      user = double("user")
+      visible_posts = double("visible_posts")
+      allow(Post).to receive(:visible_to).with(user).and_return(visible_posts)
+
       dashboard = Dashboard.new(posts: Post.all, user: user)
 
       result = dashboard.posts
 
-      expect(result.map(&:title)).to match_array(%w(
-        published_one
-        published_two
-        visible_one
-        visible_two
-      ))
+      expect(result).to eq(visible_posts)
     end
   end
 end

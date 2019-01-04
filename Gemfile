@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.2.1"
+ruby "2.4.4"
 
 gem "activerecord", "~> 4.1"
 gem "database_cleaner"
